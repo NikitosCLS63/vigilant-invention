@@ -1,4 +1,6 @@
 import time
+import csv
+import json
 
 def print_story(text):
     for char in text:
@@ -13,6 +15,7 @@ print(" ")
 print_story(story_wod)
 print(" ")
 print(" ")
+
 
 
 
@@ -146,6 +149,17 @@ def update_word(word, guessed_letters):
     return updated_word
 
 
+#счетчик отгаадаанных слов
+def count_guessed_words(words, guessed_letters):
+    count = 0
+    for word in words:
+        if update_word(word, guessed_letters):
+            count += 1
+    return count
+ 
+
+# выбор категории игры 
+
 def play_game():
     while True:
         category = input("Выберите категорию (фрукты/животные/машины/техника/спорт): ")
@@ -182,7 +196,7 @@ def play_game():
                 print(f"Игра окончена! Слово было {word}.")
                 print(f"Ваш счет: {score}")
                 break
-
+# количество очков 
             guess = get_guess()
 
             if guess in guessed_letters:
@@ -208,6 +222,37 @@ def play_game():
 if __name__ == "__main__":
             play_game()
 
+
+
+           
+filename = "usersohrn.txt"
+myfile = open (filename, mode='w')
+#сохранение в json файл 
+game_data = {
+    'USER': "ИГРОК",
+    'WORDS': count_guessed_words,
+    'SCORE': #  я не понимаю как сделать чтобы он выводил очки 
+}
+
+with open('game_data.json', 'w') as f:
+    json.dump(game_data, f) 
+myfile.close()
+
+#сохраняем в csv файл 
+with open ("game_data.csv","w",newline="") as f:
+    write = csv.writer(f)
+    writer.writerow(["ИГРОК","ОТГАДАННОЕ СЛОВО","ОЧКИ"])
+    for player in game_data["ИГРОК"]:
+        writer.writerow([player,game_data["ИГРОК"][player] ["ОТГАДАННОЕ СЛОВО"], game_data["ИГРОК"][player]["ОЧКИ"]])
+        
+delete_save = input("Хотите удолить? (да/нет): ")
+if delete_save == "да":
+    # удаляем данные из json файла
+    with open ("game_data.json", "w") as f:
+        json.dump({}, f)
+    # удаляем данные из csv файла
+    with open("game_data.csv", "w", newline="") as f:
+        pass
     
     
         
